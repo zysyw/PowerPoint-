@@ -1,0 +1,36 @@
+<customUI xmlns="http://schemas.microsoft.com/office/2009/07/customui" onLoad="Ribbon_OnLoad">
+  <ribbon>
+    <tabs>
+      <tab id="tabTeamTools" label="团队工具">
+        <group id="grpNotes" label="备注工具">
+          <button id="btnCount" label="统计备注字数" imageMso="WordCount" size="large"
+                  onAction="Ribbon_CountNotes"/>
+          <button id="btnExport" label="导出备注" imageMso="ExportTextFile" size="large" 
+                  onAction="Ribbon_ExportNotes"/>
+          <button id="btnClear" label="清空所有备注" imageMso="Clear" size="large" 
+                  onAction="Ribbon_ClearNotes"/>
+          <button id="btnRestore" label="恢复所有备注" imageMso="RestorePagePreviousVersion" size="large" 
+                  onAction="Ribbon_RestoreNotes"/>
+        </group>
+        <group id="grpAudio" label="音频工具">
+          <button id="btnIns" label="嵌入所有音频" imageMso="AudioBookmarkAdd" size="large"
+                  onAction="Ribbon_InsertAudio"/>
+          <button id="btninsCur" label="嵌入当前页音频" imageMso="AudioRecordingInsert" size="large" 
+                  onAction="Ribbon_DeleteAudioCurrent"/>
+          <button id="btnDelAll" label="删除所有音频" imageMso="NoAudioStyle" size="large" 
+                  onAction="Ribbon_DeleteAudioAll"/>
+          <button id="btnRestoreAllAudio" label="恢复所有音频" imageMso="RestorePagePreviousVersion" size="large" 
+                  onAction="Ribbon_RestoreAllAudio"/>
+        </group>
+        <group id="grpSetting" label="设置">
+          <button id="btnFASettings" label="设置" imageMso="AudioVideoSettings" size="large"
+                  onAction="Ribbon_SettingAPI"/>
+        </group>
+        <group id="grpHelp" label="帮助">
+          <button id="btnHelp" label="帮助" imageMso="Help" size="large"
+                  onAction="Ribbon_Help"/>
+        </group>
+      </tab>
+    </tabs>
+  </ribbon>
+</customUI>
