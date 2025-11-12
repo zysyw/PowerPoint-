@@ -164,8 +164,7 @@ Public Sub InsertAudio4Slide(ByVal sld As Slide, ByVal mp3Path As String, _
     On Error GoTo EH
 
     ' 5) 创建“播放媒体”动画：与上一项同时开播（无开播前延时）
-    Set eff = sld.TimeLine.MainSequence.AddEffect(shp, msoAnimEffectMediaPlay, , msoAnimTriggerWithPrevious)
-    eff.Timing.TriggerDelayTime = 0    ' 不做开播前延时
+    MakeAudioAuto sld, shp
 
     ' 6) 获取音频时长（秒）
     durSec = GetDurationFromShapeSec(shp, mp3Path)
@@ -320,4 +319,33 @@ Private Function GetDurationFromShapeSec(ByVal shp As Shape, ByVal filePath As S
     If s >= 1000# Then s = s / 1000#
     GetDurationFromShapeSec = s
 End Function
+
+' 把指定 Shape 设置为自动播放（动画触发：上一项之后；0 延时）
+Private Sub MakeAudioAuto(ByVal sld As Slide, ByVal shp As Shape)
+    Dim seq As Sequence: Set seq = sld.TimeLine.MainSequence
+    Dim i As Long
+    Dim eff As Effect
+    
+    ' 先删除该 Shape 既有的媒体动画，避免重复
+    For i = seq.Count To 1 Step -1
+        If seq(i).Shape Is shp Then
+            If seq(i).EffectType = msoAnimEffectMediaPlay _
+               Or seq(i).EffectType = msoAnimEffectMediaPause _
+               Or seq(i).EffectType = msoAnimEffectMediaStop Then
+                seq(i).Delete
+            End If
+        End If
+    Next i
+    
+    ' 添加“媒体播放”动画，设为自动（上一项之后），0 秒延时
+    Set eff = seq.AddEffect(Shape:=shp, effectId:=msoAnimEffectMediaPlay, _
+                            trigger:=msoAnimTriggerAfterPrevious)
+    eff.Timing.TriggerDelayTime = 0
+    
+    ' 可选：与功能区勾选项对应的播放设置
+    With shp.AnimationSettings.PlaySettings
+        .PlayOnEntry = True              ' 兼容旧属性，进入时播放
+        .HideWhileNotPlaying = True      ' 放映时隐藏
+    End With
+End Sub
 
